@@ -18,8 +18,8 @@
 <body>
     <div class="uk-container uk-padding-large" style="background-color: rgba(0,0,0,0.75)">
         <header>
-            <h1>COVID-19 Tracing - Live Tracking</h1>
-            <p>A website where you can search live updates on COVID-19 HotSpots before you travel!</p>
+            <h1 class="uk-heading-small uk-heading-divider"> COVID-19 Tracing - Live Tracking</h1>
+            <p class="uk-text-lead">A website where you can search live updates on COVID-19 HotSpots before you travel!</p>
         </header>
         <!-- Search Box -->
 
@@ -41,6 +41,7 @@
                 </form>
             </div>
         </div>
+        <hr class="uk-divider-icon">
 
         <!-- <form class="search">
             <label for="dname">Desination Location</label><br>
@@ -52,8 +53,21 @@
         <!-- Cards?? for searching by Metropolitan Areas, ZipCodes, and States -->
 
         <!-- container to display results -->
-        <div id="results">
-
+        <div id="results" class="uk-child-width-1-2@s" uk-grid>
+            <div>
+                <div class="uk-card uk-card-default uk-card-large uk-card-body">
+                    <h3 class="uk-card-title">Result 1</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua.</p>
+                </div>
+            </div>
+            <div>
+                <div class="uk-card uk-card-default uk-card-large uk-card-body">
+                    <h3 class="uk-card-title">Result 2</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua.</p>
+                </div>
+            </div>
         </div>
 
         <!-- footer -->
@@ -67,4 +81,5 @@
     <!-- custom JS file -->
     <script src="./assets/script.js"></script>
 </body>
+
 </html>
