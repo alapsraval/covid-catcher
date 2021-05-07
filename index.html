@@ -7,6 +7,8 @@
     <title>COVID-19 Tracing - Live Tracking</title>
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/css/uikit.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <!-- personal CSS file -->
     <link rel="stylesheet" href="./assets/style.css">
 </head>
@@ -16,9 +18,10 @@
         <p>A website where you can search live updates on COVID-19 HotSpots before you travel!</p>
     </header>
     <!-- Search Box -->
-        <form id="searchform">
+        <form class="search" id="searchform">
             <label for="dname">Desination Location</label><br>
             <input type="text" id="dname" name="dname"><br>
+            <button type="submit"><i class="fa fa-search"></i></button>
         </form>
     <!-- Maybe Maps?? -->
     <!-- Cards?? for searching by Metropolitan Areas, ZipCodes, and States -->
@@ -26,7 +29,7 @@
     <div id="results">
 
     </div>
-    
+
     
     <!-- footer -->
 </body>
