@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="uk-overlay uk-overlay-primary"
+    style="background: url(assets/coronavirus-2.jpg) no-repeat center center fixed; background-size: cover">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,38 +11,60 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/css/uikit.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <!-- personal CSS file -->
+    <!-- custom CSS file -->
     <link rel="stylesheet" href="./assets/style.css">
 </head>
+
 <body>
-    <header>
-        <h1>COVID-19 Tracing - Live Tracking</h1>
-        <p>A website where you can search live updates on COVID-19 HotSpots before you travel!</p>
-    </header>
-    <!-- Search Box -->
-        <form class="search" id="searchform">
+    <div class="uk-container uk-padding-large" style="background-color: rgba(0,0,0,0.75)">
+        <header>
+            <h1>COVID-19 Tracing - Live Tracking</h1>
+            <p>A website where you can search live updates on COVID-19 HotSpots before you travel!</p>
+        </header>
+        <!-- Search Box -->
+
+        <div uk-grid>
+            <div class="uk-width-1-4">
+                <button class="uk-button uk-button-default uk-width-expand" type="button">Filter By</button>
+                <div uk-dropdown="mode: click">
+                    <ul class="uk-nav uk-dropdown-nav">
+                        <li><a href="#">State</a></li>
+                        <li><a href="#">County</a></li>
+                        <li><a href="#"></a>Metropolitan</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="uk-width-3-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-right">
+                <form class="uk-search uk-search-default uk-width-expand" id="searchform">
+                    <a href="" class="uk-search-icon-flip" uk-search-icon></a>
+                    <input class="uk-search-input" type="search" placeholder="Search">
+                </form>
+            </div>
+        </div>
+
+        <!-- <form class="search">
             <label for="dname">Desination Location</label><br>
-            <input type="text" id="dname" name="dname"><br>
+            <input type="text" id="dname" name="dname" class="uk-input"><br>
             <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
-    <!-- Maybe Maps?? -->
-    <!-- Cards?? for searching by Metropolitan Areas, ZipCodes, and States -->
-    <!-- container to display results -->
-    <div id="results">
+        </form> -->
 
+        <!-- Maybe Maps?? -->
+        <!-- Cards?? for searching by Metropolitan Areas, ZipCodes, and States -->
+
+        <!-- container to display results -->
+        <div id="results">
+
+        </div>
+
+        <!-- footer -->
+        <footer>
+
+        </footer>
     </div>
-
-    
-    <!-- footer -->
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit-icons.min.js"></script>
+    <!-- custom JS file -->
+    <script src="./assets/script.js"></script>
 </body>
-
-
-<!-- UIkit JS -->
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit-icons.min.js"></script>
-<!-- personal JS file -->
-<script src="./assets/script.js"></script>
-
 </html>
-
-

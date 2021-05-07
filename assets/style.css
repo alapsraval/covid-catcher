@@ -3,17 +3,17 @@
 }
 
 /* Style the search field */
-form.search input[type=text] {
+/* form.search input[type=text] {
   padding: 10px;
   font-size: 17px;
   border: 1px solid grey;
   float: left;
   width: 20%;
   background: #f1f1f1;
-}
+} */
 
 /* Style the submit button */
-form.search button {
+/* form.search button {
   float: left;
   width: 5%;
   padding: 10px;
@@ -22,16 +22,16 @@ form.search button {
   font-size: 17px;
   border: 1px solid grey;
   border-left: none; /* Prevent double borders */
-  cursor: pointer;
-}
+  /*cursor: pointer;
+} */
 
-form.searcg button:hover {
+/* form.searcg button:hover {
   background: #0b7dda;
-}
+} */
 
 /* Clear floats */
-form.search::after {
+/* form.search::after {
   content: "";
   clear: both;
   display: table;
-}
+} */
