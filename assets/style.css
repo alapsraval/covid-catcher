@@ -1,9 +1,37 @@
-body {
-    background-image: url("covid.jpg");
-};
+* {
+  box-sizing: border-box;
+}
 
-.header h1 .seo {
+/* Style the search field */
+/* form.search input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 20%;
+  background: #f1f1f1;
+} */
 
-    color: red
+/* Style the submit button */
+/* form.search button {
+  float: left;
+  width: 5%;
+  padding: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none; /* Prevent double borders */
+  /*cursor: pointer;
+} */
 
-};
+/* form.searcg button:hover {
+  background: #0b7dda;
+} */
+
+/* Clear floats */
+/* form.search::after {
+  content: "";
+  clear: both;
+  display: table;
+} */

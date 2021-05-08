@@ -1,44 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html
+  lang="en"
+  class="uk-overlay uk-overlay-primary"
+  style="
+    background: url(assets/coronavirus-2.jpg) no-repeat center center fixed;
+    background-size: cover;
+  "
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>COVID-19 Tracing - Live Tracking</title>
     <!-- UIkit CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/css/uikit.min.css" />
-    <!-- personal CSS file -->
-    <link rel="stylesheet" href="./assets/style.css">
-</head>
-<body>
-    <header>
-        <h1>COVID-19 Tracing - Live Tracking</h1>
-        <p>A website where you can search live updates on COVID-19 HotSpots before you travel!</p>
-    </header>
-    <!-- Search Box -->
-        <form id="searchform">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/css/uikit.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <!-- custom CSS file -->
+    <link rel="stylesheet" href="./assets/style.css" />
+  </head>
+
+  <body>
+    <div
+      class="uk-container uk-padding-large"
+      style="background-color: rgba(0, 0, 0, 0.75)"
+    >
+      <header>
+        <h1 class="uk-heading-small uk-heading-divider">
+          COVID-19 Tracing - Live Tracking
+        </h1>
+        <p class="uk-text-lead">
+          A website where you can search live updates on COVID-19 HotSpots
+          before you travel!
+        </p>
+      </header>
+      <!-- Search Box -->
+
+      <div uk-grid>
+        <div class="uk-width-1-4">
+          <button
+            class="uk-button uk-button-default uk-width-expand"
+            type="button"
+          >
+            Filter By
+          </button>
+          <div uk-dropdown="mode: click">
+            <ul class="uk-nav uk-dropdown-nav">
+              <li><a href="#">State</a></li>
+              <li><a href="#">County</a></li>
+              <li><a href="#"></a>Metropolitan</li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="uk-width-3-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-right"
+        >
+          <form
+            class="uk-search uk-search-default uk-width-expand"
+            id="searchform"
+          >
+            <a href="" class="uk-search-icon-flip" uk-search-icon></a>
+            <input class="uk-search-input" type="search" placeholder="Search" />
+          </form>
+        </div>
+      </div>
+      <hr class="uk-divider-icon" />
+
+      <!-- <form class="search">
             <label for="dname">Desination Location</label><br>
-            <input type="text" id="dname" name="dname"><br>
-        </form>
-    <!-- Maybe Maps?? -->
-    <!-- Cards?? for searching by Metropolitan Areas, ZipCodes, and States -->
-    <!-- container to display results -->
-    <div id="results">
+            <input type="text" id="dname" name="dname" class="uk-input"><br>
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form> -->
 
+      <!-- Maybe Maps?? -->
+      <!-- Cards?? for searching by Metropolitan Areas, ZipCodes, and States -->
+
+      <!-- container to display results -->
+      <div id="results" class="uk-child-width-1-2@s" uk-grid>
+        <div>
+          <div class="uk-card uk-card-default uk-card-large uk-card-body">
+            <h3 class="uk-card-title">Result 1</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+        </div>
+        <div>
+          <div class="uk-card uk-card-default uk-card-large uk-card-body">
+            <h3 class="uk-card-title">Result 2</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- footer -->
+      <footer></footer>
     </div>
-    
-    
-    <!-- footer -->
-</body>
-
-
-<!-- UIkit JS -->
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit-icons.min.js"></script>
-<!-- personal JS file -->
-<script src="./assets/script.js"></script>
-
-
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit-icons.min.js"></script>
+    <!-- custom JS file -->
+    <script src="./assets/script.js"></script>
+  </body>
 </html>
-
-
