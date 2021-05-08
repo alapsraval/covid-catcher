@@ -44,29 +44,28 @@
 
       <div uk-grid>
         <div class="uk-width-1-4">
-          <button
-            class="uk-button uk-button-default uk-width-expand"
-            type="button"
-          >
-            Filter By
-          </button>
-          <div uk-dropdown="mode: click">
-            <ul class="uk-nav uk-dropdown-nav">
+         
+          <select id='filter-options' class='uk-select'>
+              <option value="state">State</option>
+              <option value="county">County</option>
+              <option value="metropolitan">Metropolitan</option>
+
+            <!-- <ul class="uk-nav uk-dropdown-nav">
               <li><a href="#">State</a></li>
               <li><a href="#">County</a></li>
               <li><a href="#"></a>Metropolitan</li>
-            </ul>
-          </div>
+            </ul> -->
+          </select>
         </div>
         <div
           class="uk-width-3-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-right"
         >
           <form
             class="uk-search uk-search-default uk-width-expand"
-            id="searchform"
+            id="search-form"
           >
-            <a href="" class="uk-search-icon-flip" uk-search-icon></a>
-            <input class="uk-search-input" type="search" placeholder="Search" />
+            <a href="" class="uk-search-icon-flip" id="filter-button" uk-search-icon></a>
+            <input class="uk-search-input" id="search-bar" type="search" placeholder="Search" />
           </form>
         </div>
       </div>
@@ -80,26 +79,19 @@
 
       <!-- Maybe Maps?? -->
       <!-- Cards?? for searching by Metropolitan Areas, ZipCodes, and States -->
+      <iframe src="https://public.domo.com/cards/axpDJ" width="100%" height="600" marginheight="0" marginwidth="0" frameborder="0"></iframe>
+      <!-- <iframe src="https://www.gannett-cdn.com/presto/2020/04/02/USAT/847e3ffe-83c6-4f22-bc6c-7f6c07422fff-tracker_promo.png?crop=1340,754,x0,y1" width="100%" height="600px"></iframe> -->
 
       <!-- container to display results -->
-      <div id="results" class="uk-child-width-1-2@s" uk-grid>
+      <div id="results" class="uk-child-width-1-1@s" uk-grid>
         <div>
           <div class="uk-card uk-card-default uk-card-large uk-card-body">
             <h3 class="uk-card-title">Result 1</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
+             <table class="uk-table uk-table-striped" id="results-left"></table>
           </div>
         </div>
         <div>
-          <div class="uk-card uk-card-default uk-card-large uk-card-body">
-            <h3 class="uk-card-title">Result 2</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </div>
+          
         </div>
       </div>
 

@@ -2,6 +2,11 @@
   box-sizing: border-box;
 }
 
+.uk-overlay-primary .uk-table-striped tbody tr:nth-of-type(odd){
+
+  background-color:lightgray;
+}
+
 /* Style the search field */
 /* form.search input[type=text] {
   padding: 10px;
