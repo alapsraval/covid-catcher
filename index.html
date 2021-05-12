@@ -12,6 +12,13 @@
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/css/uikit.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+    <link rel="stylesheet" href="./assets/map.css">
 
     <!-- custom CSS file -->
     <link rel="stylesheet" href="./assets/style.css" />
@@ -65,7 +72,7 @@
         <!-- <iframe id="map" src="https://dataforgood.facebook.com/covid-survey/embed-content?region=WORLD" uk-align-center width="1047" height="800" frameborder="0"></iframe> -->
         <!-- <iframe src="https://public.domo.com/cards/axpDJ" width="100%" height="600" marginheight="0" marginwidth="0" frameborder="0"></iframe> -->
         <!-- <iframe src="https://www.gannett-cdn.com/presto/2020/04/02/USAT/847e3ffe-83c6-4f22-bc6c-7f6c07422fff-tracker_promo.png?crop=1340,754,x0,y1" width="100%" height="600px"></iframe> -->
-
+        <div id="mapid"></div>
         <!-- container to display results -->
         <div id="results" class="uk-child-width-1-1@s" uk-grid>
             <div>
@@ -88,6 +95,7 @@
     <!-- custom JS file -->
     <script src="./assets/statemapping.js"></script>
     <script src="./assets/metrosmapping.js"></script>
+    <script src="./assets/map.js"></script>
     <script src="./assets/script.js"></script>
     
 </body>
