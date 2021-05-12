@@ -7,7 +7,9 @@ let resultsLeft = document.querySelector("#results-left");
 let baseURL = "https://api.covidactnow.org/v2/";
 let apiKey = "e1c94a248b014cfdb6c6d715ed157e4e";
 let selectedFilter = "states";
+let filteredKeyword = "";
 let defaultUrl = createURL(selectedFilter);
+
 
 //create functions to call an api//
 function getApi(Url) {
@@ -16,9 +18,33 @@ function getApi(Url) {
     .then((data) => {
       resultsLeft.textContent = "";
       console.log(data);
-      printResults(data);
+      filteredKeyword = abbrState(filteredKeyword);
+      if (filteredKeyword) {
+        let filteredData = data.find((o) => o.state === filteredKeyword);
+        printResults([filteredData]);
+      } else {
+        printResults(data);
+      } 
     });
 }
+
+function abbrState(input) {
+  input = input.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        for(i = 0; i < states.length; i++){
+            if(states[i][0] == input){
+                return(states[i][1]);
+            }
+        }    
+};
+
+function abbrMetro(input) {
+  input = input.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        for(i = 0; i < metros.length; i++){
+            if(metros[i][0] == input){
+                return(metros[i][1]);
+            }
+        }    
+};
 
 getApi(defaultUrl);
 
@@ -45,7 +71,8 @@ function printResults(data) {
      data.forEach((cbsa, index) => {
        let row = resultsLeft.insertRow(index);
        let cell1 = row.insertCell(0);
-       cell1.innerHTML = `${cbsa.fips} `;
+       let fips = abbrMetro(cbsa.fips);
+       cell1.innerHTML = `${fips} `;
        let cell2 = row.insertCell(1);
        cell2.innerHTML = `${cbsa.actuals.newCases} `;
      });
@@ -72,10 +99,15 @@ filterOptions.addEventListener("change", function () {
 });
 
 filterButton.addEventListener("click", function () {
-    filterCat();
+  filterCat();
+  filteredKeyword = searchBar.value;
 });
 
 //create event listeners for search bar//
+
+
+
+
 //add a heat/bubble map//
 //initial screen commit will display state's stats//
 //modal for alerts//
