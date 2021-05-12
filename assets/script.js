@@ -18,9 +18,17 @@ function getApi(Url) {
     .then((data) => {
       resultsLeft.textContent = "";
       console.log(data);
-      filteredKeyword = abbrState(filteredKeyword);
       if (filteredKeyword) {
+        filteredKeyword = abbrState(filteredKeyword);
         let filteredData = data.find((o) => o.state === filteredKeyword);
+        if (selectedFilter === "counties") {
+          filteredKeyword = searchBar.value
+          filteredData = data.find((o) => o.county === filteredKeyword);
+        } else if (selectedFilter === "cbsas") {
+          filteredKeyword = searchBar.value;
+          // filteredKeyword = abbrMetro(filteredKeyword);
+          filteredData = data.find((o) => o.fips == filteredKeyword);
+        }
         printResults([filteredData]);
       } else {
         printResults(data);
@@ -104,10 +112,6 @@ filterButton.addEventListener("click", function () {
 });
 
 //create event listeners for search bar//
-
-
-
-
 //add a heat/bubble map//
 //initial screen commit will display state's stats//
 //modal for alerts//
