@@ -7,6 +7,12 @@
   background-color:lightgray;
 }
 
+.uk-modal-body, .uk-modal-body .uk-modal-title, .uk-modal-body .uk-modal-close-default{
+  color: black;
+};
+
+
+
 /* Style the search field */
 /* form.search input[type=text] {
   padding: 10px;

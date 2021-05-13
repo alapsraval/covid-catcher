@@ -6,7 +6,7 @@ let filterOptions = document.querySelector("#filter-options");
 let resultsLeft = document.querySelector("#results-left");
 let baseURL = "https://api.covidactnow.org/v2/";
 let apiKey = "e1c94a248b014cfdb6c6d715ed157e4e";
-let selectedFilter = "states";
+let selectedFilter = localStorage.getItem("filterOption") || "states";
 let filteredKeyword = "";
 let defaultUrl = createURL(selectedFilter);
 
@@ -96,11 +96,17 @@ function filterCat() {
 filterOptions.addEventListener("change", function () {
   // get the selected option from the UI for the three catergories
   selectedFilter = filterOptions.value;
+
+  localStorage.setItem("filterOption", filterOptions.value)
 });
+
+
 
 filterButton.addEventListener("click", function () {
   filterCat();
   filteredKeyword = searchBar.value;
+  
+  if(!filteredKeyword){UIkit.modal("#modal-error").show();}
 });
 
 //create event listeners for search bar//
@@ -108,8 +114,5 @@ filterButton.addEventListener("click", function () {
 
 
 
-//add a heat/bubble map//
-//initial screen commit will display state's stats//
-//modal for alerts//
-//use local storage to store last selected filter//
 //reset button//
+//create alert for mumbo jumbo//
