@@ -10,6 +10,9 @@ let selectedFilter = localStorage.getItem("filterOption") || "states";
 let filteredKeyword = "";
 let defaultUrl = createURL(selectedFilter);
 
+function init(){
+  $("#filter-options").val(selectedFilter);
+}
 
 //create functions to call an api//
 function getApi(Url) {
@@ -99,8 +102,9 @@ function filterCat() {
   // print results (need to call it)
 }
 
-//create event listeners//
+//event listeners
 
+//event listner for filter dropdown
 filterOptions.addEventListener("change", function () {
   // get the selected option from the UI for the three catergories
   selectedFilter = filterOptions.value;
@@ -108,8 +112,7 @@ filterOptions.addEventListener("change", function () {
   localStorage.setItem("filterOption", filterOptions.value)
 });
 
-
-
+//event listener for search button
 filterButton.addEventListener("click", function () {
   filterCat();
   filteredKeyword = searchBar.value;
@@ -117,10 +120,8 @@ filterButton.addEventListener("click", function () {
   if(!filteredKeyword){UIkit.modal("#modal-error").show();}
 });
 
-//create event listeners for search bar//
+init();
 
-
-
-
+//todo
 //reset button//
 //create alert for mumbo jumbo//
