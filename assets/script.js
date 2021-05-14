@@ -9,9 +9,18 @@ let apiKey = "e1c94a248b014cfdb6c6d715ed157e4e";
 let selectedFilter = localStorage.getItem("filterOption") || "states";
 let filteredKeyword = "";
 let defaultUrl = createURL(selectedFilter);
+let resetButton = document.querySelector("#reset-button");
 
-function init(){
+function init() {
+  selectedFilter = localStorage.getItem("filterOption") || "states";
   $("#filter-options").val(selectedFilter);
+  getApi(defaultUrl);
+}
+
+function resetForm(){
+  searchForm.reset();
+  localStorage.clear();
+  init();
 }
 
 //create functions to call an api//
@@ -68,7 +77,16 @@ function printResults(data) {
        cell1.innerHTML = `${state.state} `;
        let cell2 = row.insertCell(1);
        cell2.innerHTML = `${state.actuals.newCases} `;
+
+      // let accordianList = document.createElement("li");
+      // accordianList.innerHTML = `<a class="uk-accordion-title" href="#">${state.state} <span class="uk-badge uk-background-secondary">${state.actuals.newCases}</span></a><div class="uk-accordion-content">${state.state}</div> `;
+      // resultsLeft.appendChild(accordianList);      
      });
+
+    geojson = L.geoJson(statesData, {
+      style: style,
+      onEachFeature: onEachFeature
+    }).addTo(mymap);
  } else if (selectedFilter == "counties") {
     data.forEach((county, index) => {
     let row = resultsLeft.insertRow(index);
@@ -117,8 +135,11 @@ filterButton.addEventListener("click", function () {
   filterCat();
   filteredKeyword = searchBar.value;
   
-  if(!filteredKeyword){UIkit.modal("#modal-error").show();}
+  if (!filteredKeyword) { UIkit.modal("#modal-error").show(); }
 });
+
+resetButton.addEventListener("click", resetForm);
+
 
 init();
 

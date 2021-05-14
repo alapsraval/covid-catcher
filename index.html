@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="uk-overlay uk-overlay-primary" style="
+<html lang="en" class="uk-overlay" style="
     background: url(assets/coronavirus-2.jpg) no-repeat center center fixed;
     background-size: cover;
   ">
@@ -13,20 +13,20 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/css/uikit.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-    crossorigin=""/>
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-    crossorigin=""></script>
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
     <link rel="stylesheet" href="./assets/map.css">
 
     <!-- custom CSS file -->
     <link rel="stylesheet" href="./assets/style.css" />
 </head>
 
-<body>
+<body id="main-container">
     <div class="uk-container uk-padding-large" style="background-color: rgba(0, 0, 0, 0.75)">
-        <header>
+        <header class="uk-light">
             <h1 class="uk-heading-small uk-heading-divider">
                 COVID-19 Tracing - Live Tracking
             </h1>
@@ -37,9 +37,8 @@
         </header>
         <!-- Search Box -->
 
-        <div uk-grid>
-            <div class="uk-width-1-4">
-
+        <div class="uk-light uk-child-width-expand" uk-grid>
+            <div>
                 <select id='filter-options' class='uk-select'>
                     <option value="states">State</option>
                     <option value="counties">County</option>
@@ -54,11 +53,13 @@
             </div>
             <div class="uk-width-3-4 uk-padding-small uk-padding-remove-vertical uk-padding-remove-right">
                 <form class="uk-search uk-search-default uk-width-expand" id="search-form">
-                   <a href="#" class="uk-search-icon-flip" id="filter-button" uk-search-icon 
-                   ></a>
+                    <a href="#" class="uk-search-icon-flip" id="filter-button" uk-search-icon></a>
                     <input class="uk-search-input" id="search-bar" type="search" placeholder="Search" />
                 </form>
             </div>
+            <div class="uk-padding-small uk-padding-remove-vertical uk-padding-remove-right"><button id="reset-button"
+                    class="uk-button uk-button-danger uk-width-1-1">Reset</button></div>
+
         </div>
         <hr class="uk-divider-icon" />
 
@@ -75,17 +76,97 @@
         <!-- <iframe src="https://www.gannett-cdn.com/presto/2020/04/02/USAT/847e3ffe-83c6-4f22-bc6c-7f6c07422fff-tracker_promo.png?crop=1340,754,x0,y1" width="100%" height="600px"></iframe> -->
         <div id="mapid"></div>
         <!-- container to display results -->
-        <div id="results" class="uk-child-width-1-1@s" uk-grid>
-            <div>
-                <div class="uk-card uk-card-default uk-card-large uk-card-body">
-                    <h3 class="uk-card-title">Result 1</h3>
-                    <table class="uk-table uk-table-striped" id="results-left"></table>
-                </div>
-            </div>
-            <div>
+        <div id="results" class="uk-background-default uk-padding">
+            <h3 class="uk-heading-bullet">Results</h3>
 
-            </div>
+            <!-- <ul uk-accordion class="uk-list uk-list-large uk-list-divider">
+                <li>
+                    <a class="uk-accordion-title uk-text-lead uk-text-left" href="#">Arkansas <span
+                            class="uk-badge uk-background-muted uk-text-primary">60</span></a>
+
+                    <article class="uk-comment uk-comment-primary uk-accordion-content">
+                        <header class="uk-comment-header">
+                            <div class="uk-grid-medium uk-flex-middle" uk-grid>
+                                <div class="uk-width-expand">
+                                    
+                                    <ul class="uk-comment-primar uk-subnav uk-subnav-divider uk-margin-remove-top">
+                                        <li class="uk-flex-column"><h5>Total Cases</h5>13000</li>
+                                        <li class="uk-flex-column"><h5>New Cases</h5> 456</li>
+                                        <li class="uk-flex-column"><h5>Deaths</h5> 60</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </header>
+                        <div class="uk-comment-body">
+                            
+                            <div class="uk-grid-medium uk-flex-middle" uk-grid>
+                                <div class="uk-width-expand">
+                                    <h4>Metrics</h4>
+                                    <table class="uk-table uk-table-small uk-table-divider">
+                                        <tbody>
+                                            <tr>
+                                                <td>Case Density</td>
+                                                <td>11.89</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Infection Rate</td>
+                                                <td>0.819</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Deaths</td>
+                                                <td>43</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Population</td>
+                                                <td>232222</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="uk-width-expand">
+                                    <h4>Risk Levels</h4>
+                                    <table class="uk-table uk-table-small uk-table-divider">
+                                        <tbody>
+                                            <tr>
+                                                <td>Overall Risk Level</td>
+                                                <td>60</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Infection Rate</td>
+                                                <td>100923</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Case Density</td>
+                                                <td>43</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Population</td>
+                                                <td>232222</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="uk-text-meta uk-text-left uk-margin">Updated on 2021-05-13</div>
+                    </article>
+                </li>
+            </ul>
+
+
+            <ul uk-accordion id="results-left" class="uk-list uk-list-large uk-list-divider">
+                <li>
+                    <a class="uk-accordion-title" href="#"></a>
+                    <div class="uk-accordion-content"></div>
+                </li>
+            </ul> -->
+
+            <table class="uk-table uk-table-striped uk-table-responsive" id="results-left"></table>
         </div>
+        <a class="uk-icon-button uk-position-relative to-top-button" href="#main-container" uk-scroll uk-totop
+            uk-scrollspy="cls: uk-animation-slide-right; repeat: true"></a>
+
 
         <!-- <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-close-default">Default</button> -->
         <div id="modal-error" uk-modal>
@@ -107,9 +188,9 @@
     <!-- custom JS file -->
     <script src="./assets/statemapping.js"></script>
     <script src="./assets/metrosmapping.js"></script>
+    <script src="./assets/statesData.js"></script>
     <script src="./assets/map.js"></script>
     <script src="./assets/script.js"></script>
-    
 </body>
 
 </html>
