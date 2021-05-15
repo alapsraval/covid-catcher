@@ -13,7 +13,7 @@ let baseURL = "https://api.covidactnow.org/v2/";
 let apiUrl = "";
 let selectedFilter = "";
 
-localStorage.setItem("filterOption", "cbsas");
+//localStorage.setItem("filterOption", "cbsas");
 
 //search functions
 
