@@ -1,6 +1,6 @@
 // .map() - Instantiates a map object given the DOM ID of a <div> element
 // .setView() - Sets the view of the map (geographical center and zoom) with the given animation options.
-var mymap = L.map('mapid').setView([37.8, -96], 4);
+var mymap = L.map('covid-map').setView([37.8, -96], 4);
 var mapboxAccessToken = 'pk.eyJ1IjoidHBuZXR0bGVzMSIsImEiOiJja29rcndteXAwMGxzMm9wa2hiaWVna3d1In0.H_d_OMc1GOMW4Mr3yXKDsw';
 
 // L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
