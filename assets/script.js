@@ -1,82 +1,190 @@
 //define variables//
 let searchForm = document.querySelector("#search-form");
-let filterButton = document.querySelector("#filter-button");
-let searchBar = document.querySelector("#search-bar");
 let filterOptions = document.querySelector("#filter-options");
-let resultsLeft = document.querySelector("#results-left");
-let baseURL = "https://api.covidactnow.org/v2/";
-let apiKey = "e1c94a248b014cfdb6c6d715ed157e4e";
-let selectedFilter = localStorage.getItem("filterOption") || "states";
-let filteredKeyword = "";
-let defaultUrl = createURL(selectedFilter);
+let searchBar = document.querySelector("#search-bar");
+let filterButton = document.querySelector("#filter-button");
 let resetButton = document.querySelector("#reset-button");
+let resultContainer = document.querySelector("#result-container");
 let resultHeading = document.querySelector("#result-heading");
+let mapContainer = document.querySelector("#covid-map");
 
-function init() {
-  selectedFilter = localStorage.getItem("filterOption") || "states";
-  $("#filter-options").val(selectedFilter);
-  getApi(defaultUrl);
+let apiKey = "e1c94a248b014cfdb6c6d715ed157e4e";
+let baseURL = "https://api.covidactnow.org/v2/";
+let apiUrl = "";
+let selectedFilter = "";
+
+localStorage.setItem("filterOption", "cbsas");
+
+//search functions
+
+//create functions to call an api//
+function getApiResponse(selectedFilter, searchKeyword) {
+  apiUrl = createURL(selectedFilter);
+  fetch(apiUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      resultContainer.textContent = "";
+      let filteredCovidData;
+      //replace state abbr with names
+      data = data.map(x => {
+        x.state = x.state ? abbrState(x.state) : abbrMetro(x.fips);
+        x.lastUpdatedDate = new Date(x.lastUpdatedDate).toLocaleDateString();
+        x.metrics.caseDensity = x.metrics.caseDensity ? x.metrics.caseDensity.toFixed(2) : "N/A";
+        x.metrics.infectionRate = x.metrics.infectionRate ? x.metrics.infectionRate.toFixed(2) : "N/A";
+        x.color = getColor(x.actuals.newCases);
+        return x;
+      });
+      selectedFilter === "states" ? showMap(data) : mapContainer.classList.add("uk-hidden");
+      filteredCovidData = filterData(data, selectedFilter, searchKeyword);
+
+      if (!filteredCovidData) {
+        if (searchKeyword) { UIkit.modal("#modal-error").show(); }
+        resultHeading.innerText = `All US ${selectedFilter}`;
+        data.forEach((value, index) => {
+          printResults(value);
+        });
+        return;
+      } else {
+        resultHeading.innerText = `Search result for ${selectedFilter}`;
+        //data.forEach((value, index) => {
+        printResults(filteredCovidData);
+        //});
+      }
+    });
 }
 
+function filterData(data, category, keyword) {
+  keyword = keyword.toLowerCase();
+  if (!keyword) return;
+  if (category === "states") {
+    return data.find((o) => o.state.toLowerCase() === keyword);
+  } else if (category === "counties") {
+    return data.find((o) => o.county.toLowerCase() === keyword);
+  } else if (category === "cbsas") {
+    return data.find((o) => o.fips.toLowerCase() === keyword);
+  }
+}
+
+//function to display results//
+function printResults(data) {
+  // let row = resultContainer.insertRow(index);
+  // let cell1 = row.insertCell(0);
+  // cell1.innerHTML = `${state.state} `;
+  // let cell2 = row.insertCell(1);
+  // cell2.innerHTML = `${state.actuals.newCases} `;
+
+  let accordianList = document.createElement("li");
+  let liContent = `<a class="uk-accordion-title uk-text-lead uk-text-left" href="#">${data.state || ""} ${data.county ? "-" : ""} ${data.county || ""} <span
+                            class="uk-badge uk-background-muted uk-text-secondary" style="background-color: ${data.color}">${data.actuals.newCases}</span></a>
+
+                    <article class="uk-comment uk-comment-primary uk-accordion-content">
+                        <header class="uk-comment-header">
+                            <div class="uk-grid-medium uk-flex-middle uk-grid" uk-grid>
+                                <div class="uk-width-expand uk-padding-remove-left">
+                                    
+                                    <ul class="uk-comment-primary uk-subnav uk-subnav-divider uk-margin-remove-top uk-margin-remove-left">
+                                        <li class=""><span>Total Cases <span class="uk-text-emphasis">${data.actuals.cases}</span></span></li>
+                                        <li class=""><span>New Cases <span class="uk-text-emphasis	">${data.actuals.newCases}</span></span> </li>
+                                        <li class=""><span>Deaths <span class="uk-text-emphasis">${data.actuals.deaths}</span></span> </li>
+                                        <li class=""><span>Population <span class="uk-text-emphasis">${data.population}</span></span> </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </header>
+                        <div class="uk-comment-body">  
+                            <div class="uk-grid-medium uk-flex-middle uk-grid" uk-grid>
+                                <div class="uk-width-expand@m">
+                                    <table class="uk-table uk-table-responsive uk-table-small">
+                                        <tbody>
+                                            <tr>
+                                                <td>Case Density</td>
+                                                <td class="uk-width-small">${data.metrics.caseDensity}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Infection Rate</td>
+                                                <td class="uk-width-small">${data.metrics.infectionRate}</td>
+                                            </tr>       
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="uk-width-expand@m">
+                                    <table class="uk-table uk-table-responsive uk-table-small">
+                                        <tbody>
+                                            <tr>
+                                                <td>Case Density Risk Level</td>
+                                                <td class="uk-width-small">${data.riskLevels.caseDensity}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Overall Risk Level</td>
+                                                <td class="uk-width-small">${data.riskLevels.overall}</td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="uk-text-meta uk-text-break uk-margin-top uk-margin-small-left ${!data.url ? 'uk-hidden' : ''}"><a class="uk-text-primary" href="${data.url}" target="_blank">${data.url}</a></div>
+                        <div class="uk-text-meta uk-text-break uk-margin-top uk-margin-small-left">Updated on ${data.lastUpdatedDate}</div>
+                    </article>`;
+  accordianList.innerHTML = liContent;
+  resultContainer.appendChild(accordianList);
+};
+
+function handleSearchFormSubmit() {
+  let selectedFilter = filterOptions.value || "states";
+  let searchKeyword = searchBar.value;
+  if (!searchKeyword) { UIkit.modal("#modal-error").show(); return; }
+  // call the API to get the results
+  getApiResponse(selectedFilter, searchKeyword);
+}
+
+//reset button function
 function resetForm() {
   searchForm.reset();
   localStorage.clear();
   init();
 }
 
-//create functions to call an api//
-function getApi(Url) {
-  fetch(Url)
-    .then((response) => response.json())
-    .then((data) => {
-      resultsLeft.textContent = "";
-      changeStatesData(data);
+function init() {
+  selectedFilter = localStorage.getItem("filterOption") || "states";
+  $("#filter-options").val(selectedFilter);
+  getApiResponse(selectedFilter, "");
+}
 
-      if (filteredKeyword) {
-        filteredKeyword = abbrState(filteredKeyword, "abbr");
-        let filteredData = data.find((o) => o.state === filteredKeyword);
-        if (selectedFilter === "counties") {
-          filteredKeyword = searchBar.value
-          filteredData = data.find((o) => o.county === filteredKeyword);
-        } else if (selectedFilter === "cbsas") {
-          filteredKeyword = searchBar.value;
-          // filteredKeyword = abbrMetro(filteredKeyword);
-          filteredData = data.find((o) => o.fips == filteredKeyword);
-        }
-        printResults([filteredData]);
-      } else {
-        printResults(data);
-      }
-    });
+// show map
+
+function showMap(statesCovidData) {
+  mapContainer.classList.remove("uk-hidden");
+  changeStatesData(statesCovidData);
+  geojson = L.geoJson(statesData, {
+    style: style,
+    onEachFeature: onEachFeature
+  }).addTo(mymap);
+}
+
+// utility functions
+
+// function to create API URL using parameters
+function createURL(filter) {
+  return `${baseURL}${filter}.json?apiKey=${apiKey}`;
 }
 
 function changeStatesData(data) {
-  console.log(data);
-  let cases = [];
-  data.forEach(caseData => {
-    let caseObj = {
-      "name": abbrState(caseData.state, "name"),
-      "cases": caseData.actuals.newCases
-    }
-    cases.push(caseObj);
-  })
-
   statesData.features.map(state => {
-    const matchIndex = cases.findIndex(y => y.name === state.properties.name);
+    const matchIndex = data.findIndex(y => y.state === state.properties.name);
     if (matchIndex > -1) {
-      state.properties.density = cases[matchIndex].cases;
+      state.properties.density = data[matchIndex].actuals.newCases;
     }
-    // cases.forEach(caseData => {
-    //   console.log(caseData.name);
-    // })
-    //console.log(state.properties);
   })
-  console.log(statesData);
   return;
 }
 
 // reference: https://gist.github.com/calebgrove/c285a9510948b633aa47
-function abbrState(input, to = 'abbr') {
+
+//function to convert abbr to name or vice versa
+function abbrState(input, to = 'name') {
   if (to == 'abbr') {
     input = input.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
     for (i = 0; i < states.length; i++) {
@@ -94,181 +202,24 @@ function abbrState(input, to = 'abbr') {
   }
 };
 
-function abbrMetro(input) {
-  input = input.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
-  for (i = 0; i < metros.length; i++) {
-    if (metros[i][0] == input) {
-      return (metros[i][1]);
+//function to convert abbr to name or vice versa
+
+function abbrMetro(input, to = 'name') {
+  if (to == 'fips') {
+    input = input.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
+    for (i = 0; i < metros.length; i++) {
+      if (metros[i][1] == input) {
+        return (metros[i][0]);
+      }
+    }
+  } else if (to == 'name') {
+    for (i = 0; i < metros.length; i++) {
+      if (metros[i][0] == input) {
+        return (metros[i][1]);
+      }
     }
   }
 };
-
-getApi(defaultUrl);
-
-//function to display results//
-function printResults(data) {
-  if (selectedFilter == "states") {
-    data.forEach((state, index) => {
-      // let row = resultsLeft.insertRow(index);
-      // let cell1 = row.insertCell(0);
-      // cell1.innerHTML = `${state.state} `;
-      // let cell2 = row.insertCell(1);
-      // cell2.innerHTML = `${state.actuals.newCases} `;
-
-      let accordianList = document.createElement("li");
-      let liContent = `<a class="uk-accordion-title uk-text-lead uk-text-left" href="#">${abbrState(state.state, "name")} <span
-                            class="uk-badge uk-background-muted uk-text-secondary" style="background-color: ${getColor(state.actuals.newCases)}">${state.actuals.newCases}</span></a>
-
-                    <article class="uk-comment uk-comment-primary uk-accordion-content">
-                        <header class="uk-comment-header">
-                            <div class="uk-grid-medium uk-flex-middle" uk-grid>
-                                <div class="uk-width-expand uk-padding-remove-left">
-                                    
-                                    <ul class="uk-comment-primary uk-subnav uk-subnav-divider uk-margin-remove-top uk-margin-remove-left">
-                                        <li class=""><span>Total Cases <span class="uk-text-emphasis">${state.actuals.cases}</span></span></li>
-                                        <li class=""><span>New Cases <span class="uk-text-emphasis	">${state.actuals.newCases}</span></span> </li>
-                                        <li class=""><span>Deaths <span class="uk-text-emphasis">${state.actuals.deaths}</span></span> </li>
-                                        <li class=""><span>Population <span class="uk-text-emphasis">${state.population}</span></span> </li>
-
-                                    </ul>
-                                </div>
-                            </div>
-                        </header>
-                        <div class="uk-comment-body">  
-                            <div class="uk-grid-medium uk-flex-middle" uk-grid>
-                                <div class="uk-width-expand@m">
-                                    <table class="uk-table uk-table-responsive uk-table-small">
-                                        <tbody>
-                                            <tr>
-                                                <td>Case Density</td>
-                                                <td class="uk-width-small">${state.metrics.caseDensity}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Infection Rate</td>
-                                                <td class="uk-width-small">${state.metrics.infectionRate}</td>
-                                            </tr>       
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="uk-width-expand@m">
-                                    <table class="uk-table uk-table-responsive uk-table-small">
-                                        <tbody>
-                                            <tr>
-                                                <td>Case Density Risk Level</td>
-                                                <td class="uk-width-small">${state.riskLevels.caseDensity}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Overall Risk Level</td>
-                                                <td class="uk-width-small">${state.riskLevels.overall}</td>
-                                            </tr>
-                                            
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="uk-text-meta uk-text-break uk-margin-top uk-margin-small-left"><a class="uk-text-primary" href="${state.url}" target="_blank">${state.url}</a></div>
-                        <div class="uk-text-meta uk-text-break uk-margin-top uk-margin-small-left">Updated on ${new Date(state.lastUpdatedDate).toLocaleDateString()}</div>
-                    </article>`;
-      accordianList.innerHTML = liContent;
-      resultsLeft.appendChild(accordianList);
-    });
-
-    geojson = L.geoJson(statesData, {
-      style: style,
-      onEachFeature: onEachFeature
-    }).addTo(mymap);
-  } else if (selectedFilter == "counties") {
-    data.forEach((county, index) => {
-      // let row = resultsLeft.insertRow(index);
-      // let cell1 = row.insertCell(0);
-      // cell1.innerHTML = `${county.county} `;
-      // let cell2 = row.insertCell(1);
-      // cell2.innerHTML = `${county.actuals.newCases} `;
-
-      let accordianList = document.createElement("li");
-      let liContent = `<a class="uk-accordion-title uk-text-lead uk-text-left" href="#">${county.county} <span
-                            class="uk-badge uk-background-muted uk-text-secondary" style="background-color: ${getColor(county.actuals.newCases)}">${county.actuals.newCases}</span></a>
-
-                    <article class="uk-comment uk-comment-primary uk-accordion-content">
-                        <header class="uk-comment-header">
-                            <div class="uk-grid-medium uk-flex-middle" uk-grid>
-                                <div class="uk-width-expand uk-padding-remove-left">
-                                    
-                                    <ul class="uk-comment-primary uk-subnav uk-subnav-divider uk-margin-remove-top uk-margin-remove-left">
-                                        <li class=""><span>Total Cases <span class="uk-text-emphasis">${county.actuals.newCases}</span></span></li>
-                                        <li class=""><span>New Cases <span class="uk-text-emphasis	">${county.actuals.newCases}</span></span> </li>
-                                        <li class=""><span>Deaths <span class="uk-text-emphasis">${county.actuals.deaths}</span></span> </li>
-                                        <li class=""><span>Population <span class="uk-text-emphasis">${county.population}</span></span> </li>
-
-                                    </ul>
-                                </div>
-                            </div>
-                        </header>
-                        <div class="uk-comment-body">  
-                            <div class="uk-grid-medium uk-flex-middle" uk-grid>
-                                <div class="uk-width-expand@m">
-                                    <table class="uk-table uk-table-responsive uk-table-small">
-                                        <tbody>
-                                            <tr>
-                                                <td>Case Density</td>
-                                                <td class="uk-width-small">${county.metrics.caseDensity}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Infection Rate</td>
-                                                <td class="uk-width-small">${county.metrics.infectionRate}</td>
-                                            </tr>       
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="uk-width-expand@m">
-                                    <table class="uk-table uk-table-responsive uk-table-small">
-                                        <tbody>
-                                            <tr>
-                                                <td>Case Density Risk Level</td>
-                                                <td class="uk-width-small">${county.riskLevels.caseDensity}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Overall Risk Level</td>
-                                                <td class="uk-width-small">${county.riskLevels.overall}</td>
-                                            </tr>
-                                            
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="uk-text-meta uk-text-break uk-margin-top uk-margin-small-left"><a class="uk-text-primary" href="${county.url}" target="_blank">${county.url}</a></div>
-                        <div class="uk-text-meta uk-text-break uk-margin-top uk-margin-small-left">Updated on ${new Date(county.lastUpdatedDate).toLocaleDateString()}</div>
-                    </article>`;
-      accordianList.innerHTML = liContent;
-      resultsLeft.appendChild(accordianList);
-    });
-  }
-  else if (selectedFilter == "cbsas") {
-    data.forEach((cbsa, index) => {
-      let row = resultsLeft.insertRow(index);
-      let cell1 = row.insertCell(0);
-      let fips = abbrMetro(cbsa.fips);
-      cell1.innerHTML = `${fips} `;
-      let cell2 = row.insertCell(1);
-      cell2.innerHTML = `${cbsa.actuals.newCases} `;
-    });
-  }
-  resultHeading.innerText = `Results for ${selectedFilter}`;
-};
-
-// function for parameters
-function createURL(filter) {
-  return `${baseURL}${filter}.json?apiKey=${apiKey}`;
-}
-
-function filterCat() {
-  // call the API to get the results
-  let newUrl = createURL(selectedFilter);
-  getApi(newUrl);
-  // print results (need to call it)
-}
 
 //event listeners
 
@@ -280,16 +231,7 @@ filterOptions.addEventListener("change", function () {
 });
 
 //event listener for search button
-filterButton.addEventListener("click", function () {
-  filterCat();
-  filteredKeyword = searchBar.value;
-  if (!filteredKeyword) { UIkit.modal("#modal-error").show(); }
-});
-
+filterButton.addEventListener("click", handleSearchFormSubmit);
 resetButton.addEventListener("click", resetForm);
 
-
 init();
-
-//todo
-//create alert for mumbo jumbo//
