@@ -10,6 +10,7 @@ let selectedFilter = localStorage.getItem("filterOption") || "states";
 let filteredKeyword = "";
 let defaultUrl = createURL(selectedFilter);
 let resetButton = document.querySelector("#reset-button");
+let resultHeading = document.querySelector("#result-heading");
 
 function init() {
   selectedFilter = localStorage.getItem("filterOption") || "states";
@@ -135,8 +136,8 @@ function printResults(data) {
                         </header>
                         <div class="uk-comment-body">  
                             <div class="uk-grid-medium uk-flex-middle" uk-grid>
-                                <div class="uk-width-expand">
-                                    <table class="uk-table uk-table-small uk-table-divider">
+                                <div class="uk-width-expand@m">
+                                    <table class="uk-table uk-table-responsive uk-table-small">
                                         <tbody>
                                             <tr>
                                                 <td>Case Density</td>
@@ -149,8 +150,8 @@ function printResults(data) {
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="uk-width-expand">
-                                    <table class="uk-table uk-table-small uk-table-divider">
+                                <div class="uk-width-expand@m">
+                                    <table class="uk-table uk-table-responsive uk-table-small">
                                         <tbody>
                                             <tr>
                                                 <td>Case Density Risk Level</td>
@@ -166,8 +167,8 @@ function printResults(data) {
                                 </div>
                             </div>
                         </div>
-                        <div class="uk-text-meta uk-margin-top uk-margin-small-left"><a href="${state.url}" target="_blank">${state.url}</a></div>
-                        <div class="uk-text-meta uk-margin-top uk-margin-small-left">Updated on ${new Date(state.lastUpdatedDate).toLocaleDateString()}</div>
+                        <div class="uk-text-meta uk-text-break uk-margin-top uk-margin-small-left"><a class="uk-text-primary" href="${state.url}" target="_blank">${state.url}</a></div>
+                        <div class="uk-text-meta uk-text-break uk-margin-top uk-margin-small-left">Updated on ${new Date(state.lastUpdatedDate).toLocaleDateString()}</div>
                     </article>`;
       accordianList.innerHTML = liContent;
       resultsLeft.appendChild(accordianList);
@@ -179,11 +180,69 @@ function printResults(data) {
     }).addTo(mymap);
   } else if (selectedFilter == "counties") {
     data.forEach((county, index) => {
-      let row = resultsLeft.insertRow(index);
-      let cell1 = row.insertCell(0);
-      cell1.innerHTML = `${county.county} `;
-      let cell2 = row.insertCell(1);
-      cell2.innerHTML = `${county.actuals.newCases} `;
+      // let row = resultsLeft.insertRow(index);
+      // let cell1 = row.insertCell(0);
+      // cell1.innerHTML = `${county.county} `;
+      // let cell2 = row.insertCell(1);
+      // cell2.innerHTML = `${county.actuals.newCases} `;
+
+      let accordianList = document.createElement("li");
+      let liContent = `<a class="uk-accordion-title uk-text-lead uk-text-left" href="#">${county.county} <span
+                            class="uk-badge uk-background-muted uk-text-secondary" style="background-color: ${getColor(county.actuals.newCases)}">${county.actuals.newCases}</span></a>
+
+                    <article class="uk-comment uk-comment-primary uk-accordion-content">
+                        <header class="uk-comment-header">
+                            <div class="uk-grid-medium uk-flex-middle" uk-grid>
+                                <div class="uk-width-expand uk-padding-remove-left">
+                                    
+                                    <ul class="uk-comment-primary uk-subnav uk-subnav-divider uk-margin-remove-top uk-margin-remove-left">
+                                        <li class=""><span>Total Cases <span class="uk-text-emphasis">${county.actuals.newCases}</span></span></li>
+                                        <li class=""><span>New Cases <span class="uk-text-emphasis	">${county.actuals.newCases}</span></span> </li>
+                                        <li class=""><span>Deaths <span class="uk-text-emphasis">${county.actuals.deaths}</span></span> </li>
+                                        <li class=""><span>Population <span class="uk-text-emphasis">${county.population}</span></span> </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </header>
+                        <div class="uk-comment-body">  
+                            <div class="uk-grid-medium uk-flex-middle" uk-grid>
+                                <div class="uk-width-expand@m">
+                                    <table class="uk-table uk-table-responsive uk-table-small">
+                                        <tbody>
+                                            <tr>
+                                                <td>Case Density</td>
+                                                <td class="uk-width-small">${county.metrics.caseDensity}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Infection Rate</td>
+                                                <td class="uk-width-small">${county.metrics.infectionRate}</td>
+                                            </tr>       
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="uk-width-expand@m">
+                                    <table class="uk-table uk-table-responsive uk-table-small">
+                                        <tbody>
+                                            <tr>
+                                                <td>Case Density Risk Level</td>
+                                                <td class="uk-width-small">${county.riskLevels.caseDensity}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Overall Risk Level</td>
+                                                <td class="uk-width-small">${county.riskLevels.overall}</td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="uk-text-meta uk-text-break uk-margin-top uk-margin-small-left"><a class="uk-text-primary" href="${county.url}" target="_blank">${county.url}</a></div>
+                        <div class="uk-text-meta uk-text-break uk-margin-top uk-margin-small-left">Updated on ${new Date(county.lastUpdatedDate).toLocaleDateString()}</div>
+                    </article>`;
+      accordianList.innerHTML = liContent;
+      resultsLeft.appendChild(accordianList);
     });
   }
   else if (selectedFilter == "cbsas") {
@@ -196,6 +255,7 @@ function printResults(data) {
       cell2.innerHTML = `${cbsa.actuals.newCases} `;
     });
   }
+  resultHeading.innerText = `Results for ${selectedFilter}`;
 };
 
 // function for parameters
@@ -216,7 +276,6 @@ function filterCat() {
 filterOptions.addEventListener("change", function () {
   // get the selected option from the UI for the three catergories
   selectedFilter = filterOptions.value;
-
   localStorage.setItem("filterOption", filterOptions.value)
 });
 
@@ -224,7 +283,6 @@ filterOptions.addEventListener("change", function () {
 filterButton.addEventListener("click", function () {
   filterCat();
   filteredKeyword = searchBar.value;
-
   if (!filteredKeyword) { UIkit.modal("#modal-error").show(); }
 });
 
@@ -234,5 +292,4 @@ resetButton.addEventListener("click", resetForm);
 init();
 
 //todo
-//reset button//
 //create alert for mumbo jumbo//
