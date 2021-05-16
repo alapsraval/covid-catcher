@@ -16,6 +16,7 @@ https://alapsraval.github.io/covid-catcher/
 * Interactive map with color coding to visualize Covid-19 new cases.
 * Reset button to start over search
 * Local storage to retain selected option after page refresh
+* Make it more mobile friendly
 
 ## Roadmap
 * Allow users to search by keywords (e.g. user should be able to look for Illinois cases by typing "IL" or "Illin")
