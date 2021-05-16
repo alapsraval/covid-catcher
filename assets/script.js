@@ -151,6 +151,7 @@ function init() {
   selectedFilter = localStorage.getItem("filterOption") || "states";
   $("#filter-options").val(selectedFilter);
   getApiResponse(selectedFilter, "");
+  updatePlaceHolderText(selectedFilter);
 }
 
 // show map
@@ -221,12 +222,20 @@ function abbrMetro(input, to = 'name') {
   }
 };
 
+function updatePlaceHolderText(category) {
+  searchBar.placeholder = category === "states" ? 'e.g. illinois' :
+      category === "counties" ? 'e.g. dupage county' :
+        category === "cbsas" ? 'e.g. 16980' :
+          'search keyword';
+}
+
 //event listeners
 
 //event listner for filter dropdown
 filterOptions.addEventListener("change", function () {
   // get the selected option from the UI for the three catergories
   selectedFilter = filterOptions.value;
+  updatePlaceHolderText(selectedFilter);
   localStorage.setItem("filterOption", filterOptions.value)
 });
 
