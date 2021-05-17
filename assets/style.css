@@ -3,6 +3,21 @@
 }
 
 .to-top-button{
-  left: 50%;
+  right: 5px;;
   bottom: 18px;
+}
+
+/* spinner style */
+#spinner:not([hidden]) {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.9;
+  background-color: #f3f3f3;
+  z-index: 9999;
 }

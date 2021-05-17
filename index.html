@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="uk-overlay" style="
+<html lang="en" id="main-container" class="uk-overlay" style="
     background: url(assets/coronavirus-2.jpg) no-repeat center center fixed;
     background-size: cover;
   ">
@@ -24,7 +24,8 @@
     <link rel="stylesheet" href="./assets/style.css" />
 </head>
 
-<body id="main-container">
+<body>
+    <div hidden id="spinner" uk-spinner="ratio: 3"></div>
     <div class="uk-container uk-padding-large" style="background-color: rgba(0, 0, 0, 0.75)">
         <header class="uk-light">
             <h1 class="uk-heading-small uk-heading-divider">
@@ -63,26 +64,21 @@
         </div>
         <hr class="uk-divider-icon" />
 
-        <!-- <iframe id="map" src="https://dataforgood.facebook.com/covid-survey/embed-content?region=WORLD" uk-align-center width="1047" height="800" frameborder="0"></iframe> -->
-        <!-- <iframe src="https://public.domo.com/cards/axpDJ" width="100%" height="600" marginheight="0" marginwidth="0" frameborder="0"></iframe> -->
-        <!-- <iframe src="https://www.gannett-cdn.com/presto/2020/04/02/USAT/847e3ffe-83c6-4f22-bc6c-7f6c07422fff-tracker_promo.png?crop=1340,754,x0,y1" width="100%" height="600px"></iframe> -->
         <div id="covid-map" class="uk-visible@m"></div>
         <!-- container to display results -->
         <div id="results" class="uk-background-default uk-padding">
             <h3 class="uk-heading-bullet" id="result-heading">Results</h3>
-            <ul uk-accordion id="result-container" class="uk-list uk-list-large uk-list-divider"></ul>
+            <ul uk-accordion id="result-container" class="uk-list uk-list-large uk-list-divider" uk-scrollspy="cls: uk-animation-fade; target: .uk-accordion-title"></ul>
             <!-- <table class="uk-table uk-table-striped uk-table-responsive" id="results-left"></table> -->
+            <a class="uk-icon-button uk-position-fixed to-top-button" href="#main-container" uk-scroll uk-totop
+            uk-scrollspy="cls: uk-animation-fade; repeat: true;"></a>
         </div>
-        <a class="uk-icon-button uk-position-relative to-top-button" href="#main-container" uk-scroll uk-totop
-            uk-scrollspy="cls: uk-animation-slide-bottom; repeat: true"></a>
-
-
-        <!-- <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-close-default">Default</button> -->
+        
         <div id="modal-error" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
                 <button class="uk-modal-close-default" type="button" uk-close></button>
                 <h2 class="uk-modal-title">Error!!!</h2>
-                <p>Please enter corresponding state, county or metropolitan.</p>
+                <p class="uk-modal-message">Please enter corresponding state, county or metropolitan.</p>
             </div>
         </div>
 

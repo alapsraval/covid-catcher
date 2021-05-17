@@ -13,6 +13,11 @@ let baseURL = "https://api.covidactnow.org/v2/";
 let apiUrl = "";
 let selectedFilter = "";
 
+let spinner = document.getElementById("spinner");
+
+let modalTitle = document.querySelector(".uk-modal-title");
+let modalMessage = document.querySelector(".uk-modal-message");
+
 //localStorage.setItem("filterOption", "cbsas");
 
 //search functions
@@ -20,6 +25,7 @@ let selectedFilter = "";
 //create functions to call an api//
 function getApiResponse(selectedFilter, searchKeyword) {
   apiUrl = createURL(selectedFilter);
+  showSpinner();
   fetch(apiUrl)
     .then((response) => response.json())
     .then((data) => {
@@ -37,19 +43,28 @@ function getApiResponse(selectedFilter, searchKeyword) {
       selectedFilter === "states" ? showMap(data) : mapContainer.classList.add("uk-hidden");
       filteredCovidData = filterData(data, selectedFilter, searchKeyword);
 
+      let searchHeadingText = updateSearchHeadingText(selectedFilter, searchKeyword);
+
       if (!filteredCovidData) {
-        if (searchKeyword) { UIkit.modal("#modal-error").show(); }
-        resultHeading.innerText = `All US ${selectedFilter}`;
+        if (searchKeyword) {
+          showErrorModal('Error', 'No matching record was found. Please try another keyword.');
+          searchHeadingText = updateSearchHeadingText(selectedFilter, '');
+        }
+        resultHeading.innerText = searchHeadingText;
         data.forEach((value, index) => {
           printResults(value);
         });
-        return;
       } else {
-        resultHeading.innerText = `Search result for ${selectedFilter}`;
+        resultHeading.innerText = searchHeadingText;
         //data.forEach((value, index) => {
         printResults(filteredCovidData);
         //});
       }
+      hideSpinner();
+    })
+    .catch((error) => {
+      hideSpinner();
+      showErrorModal('Error', error);
     });
 }
 
@@ -135,7 +150,7 @@ function printResults(data) {
 function handleSearchFormSubmit() {
   let selectedFilter = filterOptions.value || "states";
   let searchKeyword = searchBar.value;
-  if (!searchKeyword) { UIkit.modal("#modal-error").show(); return; }
+  if (!searchKeyword) { showErrorModal("Error!!", "Please enter corresponding state, county or metropolitan."); return; }
   // call the API to get the results
   getApiResponse(selectedFilter, searchKeyword);
 }
@@ -222,11 +237,38 @@ function abbrMetro(input, to = 'name') {
   }
 };
 
+function updateSearchHeadingText(category, keyword) {
+  if (keyword) {
+    return `Search result for ${keyword}`
+  } else {
+    return category === "states" ? 'All US States' :
+      category === "counties" ? 'All US Counties' :
+        category === "cbsas" ? 'All US Metropolitan Areas' :
+          '';
+  }
+}
+
 function updatePlaceHolderText(category) {
   searchBar.placeholder = category === "states" ? 'e.g. illinois' :
       category === "counties" ? 'e.g. dupage county' :
         category === "cbsas" ? 'e.g. 16980' :
           'search keyword';
+}
+
+//show spinner while fetching data
+function showSpinner() {
+  spinner.removeAttribute('hidden');
+}
+
+//hide spinner after fetching data
+function hideSpinner() {
+  spinner.setAttribute('hidden', '');
+}
+
+function showErrorModal(type = "Error", message = "Invalid input"){
+  modalTitle.textContent = type;
+  modalMessage.textContent = message;
+  UIkit.modal("#modal-error").show();
 }
 
 //event listeners
