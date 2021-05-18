@@ -25,3 +25,4 @@ https://alapsraval.github.io/covid-catcher/
 
 ## Screenshots
 ![image](https://user-images.githubusercontent.com/4267902/118411140-b67db100-b658-11eb-8258-46597905a9f8.png)
+![Screenshot New](assets/img/screenshot-051821.png)
