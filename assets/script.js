@@ -18,8 +18,6 @@ let spinner = document.getElementById("spinner");
 let modalTitle = document.querySelector(".uk-modal-title");
 let modalMessage = document.querySelector(".uk-modal-message");
 
-//localStorage.setItem("filterOption", "cbsas");
-
 //search functions
 
 //create functions to call an api//
@@ -56,9 +54,7 @@ function getApiResponse(selectedFilter, searchKeyword) {
         });
       } else {
         resultHeading.innerText = searchHeadingText;
-        //data.forEach((value, index) => {
         printResults(filteredCovidData);
-        //});
       }
       hideSpinner();
     })
@@ -147,7 +143,8 @@ function printResults(data) {
   resultContainer.appendChild(accordianList);
 };
 
-function handleSearchFormSubmit() {
+function handleSearchFormSubmit(event) {
+  event.preventDefault();
   let selectedFilter = filterOptions.value || "states";
   let searchKeyword = searchBar.value;
   if (!searchKeyword) { showErrorModal("Error!!", "Please enter corresponding state, county or metropolitan."); return; }
