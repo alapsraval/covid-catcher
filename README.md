@@ -8,7 +8,7 @@ https://alapsraval.github.io/covid-catcher/
 * HTML/CSS
 * Vanilla JS
 * [UI Kit](https://getuikit.com/)
-* [LeafletJS](https://leafletjs.com
+* [LeafletJS](https://leafletjs.com)
 * API - [Covid Act Now API](https://api.covidactnow.org/)
 
 ## Features
