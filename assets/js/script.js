@@ -78,11 +78,11 @@ function filterData(data, category, keyword) {
 
 //function to display results//
 function printResults(data) {
-  // let row = resultContainer.insertRow(index);
+  // let row = resultContainer.insertRow(-1);
   // let cell1 = row.insertCell(0);
-  // cell1.innerHTML = `${state.state} `;
+  // cell1.innerHTML = `${data.county} `;
   // let cell2 = row.insertCell(1);
-  // cell2.innerHTML = `${state.actuals.newCases} `;
+  // cell2.innerHTML = `${data.actuals.newCases} `;
 
   let accordianList = document.createElement("li");
   let liContent = `<a class="uk-accordion-title uk-text-lead uk-text-left" href="#">${data.state || ""} ${data.county ? "-" : ""} ${data.county || ""} <span
